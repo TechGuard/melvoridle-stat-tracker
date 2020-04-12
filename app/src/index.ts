@@ -30,7 +30,7 @@ const originals = Inject({
         }
         return originals.addXP(skill, xp);
     },
-    addItemToBank(itemID, quantity, found, showNotification) {
+    addItemToBank(itemID, quantity, found = true, showNotification = true) {
         try {
             app.trackObject('item', itemID, quantity);
         } catch (err) {
