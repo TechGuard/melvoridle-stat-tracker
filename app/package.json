@@ -8,15 +8,7 @@
         "serve": "webpack-dev-server --config webpack.dev.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "keywords": [
-        "melvor",
-        "idle",
-        "statistics",
-        "stat",
-        "tracker",
-        "tracking"
-    ],
-    "author": "Robin van Nunen <robin@vnunen.nl",
+    "author": "Robin van Nunen <robin@vnunen.nl>",
     "license": "ISC",
     "devDependencies": {
         "@babel/core": "^7.9.0",
@@ -37,5 +29,9 @@
         "webpack-cli": "^3.3.11",
         "webpack-dev-server": "^3.10.3",
         "webpack-merge": "^4.2.2"
+    },
+    "dependencies": {
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1"
     }
 }

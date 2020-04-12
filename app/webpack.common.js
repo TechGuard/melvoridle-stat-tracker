@@ -53,10 +53,6 @@ function build(settings) {
                     ]
                 }
             ]
-        },
-        externals: {
-            "react": "React",
-            "react-dom": "ReactDOM"
         }
     }
 }
