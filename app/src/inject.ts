@@ -26,7 +26,8 @@ export function Inject(overrides: FunctionSignatures) {
     for (const functionName in overrides) {
         const override = overrides[functionName] as InjectedFunction;
         override.__injected = true;
-
+        
+        originals[functionName] = GLOBAL[functionName];
         GLOBAL[functionName] = overrides[functionName];
     }
 
