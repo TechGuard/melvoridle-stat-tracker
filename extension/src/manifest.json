@@ -6,10 +6,9 @@
     "author": "Robin van Nunen <robin@vnunen.nl>",
     "homepage_url": "https://github.com/TechGuard/melvoridle-stat-tracker",
     "icons": { "16": "icon16.png", "48": "icon48.png", "128": "icon128.png" },
-    "offline_enabled": false,
     "content_scripts": [
         {
-            "matches": ["https://*.melvoridle.com/*"],
+            "matches": ["*://*.melvoridle.com/*"],
             "js": ["inject.js"]
         }
     ],

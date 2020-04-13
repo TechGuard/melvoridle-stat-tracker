@@ -1,6 +1,6 @@
 # ![Icon](/extension/src/icon16.png) MelvorIdle - StatTracker
 
-**Note: This is not an official melvoridle.com project.**
+**Note: This is not an official [melvoridle.com](https://melvoridle.com/) project.**
 
 ![Screenshot](/extension/screenshot1.png)
 
@@ -11,7 +11,7 @@ This extension adds statistic tracking for skills and items to the navigation me
 
 # How to install
 
-You can install this as a chrome extension with automatic updates: https://chrome.google.com/webstore/detail/melvoridle-stattracker/ejhffeagphghbmdaakobmfpobjijaogg
+You can install this extension (with automatic updates) on [Chrome](https://chrome.google.com/webstore/detail/melvoridle-stattracker/ejhffeagphghbmdaakobmfpobjijaogg) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/melvoridle-stattracker/).
 
 # How to build locally
 
@@ -29,4 +29,4 @@ cd app
 npm run serve
 ```
 
-This will start a local dev server with hot reloading enabled. Inject the script https://localhost:8080/app.bundle.js into melvoridle.com to start testing. For example, use [Tampermonkey](https://www.tampermonkey.net/) to inject the script.
+This will start a local dev server with hot reloading enabled. Inject the script https://localhost:8080/app.bundle.js into [melvoridle.com](https://melvoridle.com/) to start testing. For example, use [Tampermonkey](https://www.tampermonkey.net/) to inject the script.
