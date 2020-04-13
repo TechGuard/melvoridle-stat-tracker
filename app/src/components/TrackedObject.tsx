@@ -8,14 +8,16 @@ export interface TrackedObject {
     type: ObjectType;
     key: string;
     id: number;
-    value: number;
-    lastTime: number;
+    lastUpdated: number;
+    valuePerSecond: number;
+    values: { time: number; value: number }[];
+    valueIdx: number;
 }
 
 export class TrackedSkill extends Component<TrackedObject> {
     render() {
         const skillId = this.props.id;
-        const expPerSecond = this.props.value;
+        const expPerSecond = this.props.valuePerSecond;
         if (expPerSecond === 0) return null;
         const expPerHour = Math.floor(expPerSecond * 60 * 60);
 
@@ -61,7 +63,7 @@ export class TrackedSkill extends Component<TrackedObject> {
 export class TrackedItem extends Component<TrackedObject> {
     render() {
         const itemId = this.props.id;
-        const itemsPerSecond = this.props.value;
+        const itemsPerSecond = this.props.valuePerSecond;
         if (itemsPerSecond === 0) return null;
         const itemsPerHour = Math.floor(itemsPerSecond * 60 * 60);
 

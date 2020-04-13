@@ -6,6 +6,7 @@
 export interface FunctionSignatures {
     addXP: (skill: number, xp: number) => void;
     addItemToBank: (itemID: number, quantity: number, found: boolean, showNotification: boolean) => boolean;
+    updateOffline: (continueAction: boolean) => void;
 
     [key: string]: Function;
 }
@@ -26,7 +27,7 @@ export function Inject(overrides: FunctionSignatures) {
     for (const functionName in overrides) {
         const override = overrides[functionName] as InjectedFunction;
         override.__injected = true;
-        
+
         originals[functionName] = GLOBAL[functionName];
         GLOBAL[functionName] = overrides[functionName];
     }

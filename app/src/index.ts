@@ -38,6 +38,14 @@ const originals = Inject({
         }
         return originals.addItemToBank(itemID, quantity, found, showNotification);
     },
+    updateOffline(continueAction = true) {
+        try {
+            app.reset();
+        } catch (err) {
+            console.error(err);
+        }
+        return originals.updateOffline(continueAction);
+    },
 });
 
 // Render application

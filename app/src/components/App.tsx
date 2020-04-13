@@ -15,40 +15,46 @@ export default class App extends Component<{}, AppState> {
 
     trackObject(type: ObjectType, id: number, value: number) {
         const timestamp = new Date().getTime();
+        const object: Readonly<TrackedObject> | undefined = this.state.trackedObjects.find(
+            (o) => o.type === type && o.id === id
+        );
 
-        // Ignore first object
-        const object = this.state.trackedObjects.find((o) => o.type === type && o.id === id);
+        // Ignore first occurrence of object
         if (object === undefined) {
             this.setState((prevState) => ({
-                trackedObjects: prevState.trackedObjects.concat([
-                    {
-                        type: type,
-                        key: `${type}-${id}`,
-                        id: id,
-                        value: 0,
-                        lastTime: timestamp,
-                    },
-                ]),
+                trackedObjects: prevState.trackedObjects.concat({
+                    type: type,
+                    key: `${type}-${id}`,
+                    id: id,
+                    lastUpdated: 0,
+                    valuePerSecond: 0,
+
+                    // Keep track of 10 actions
+                    values: Array(10).fill({ time: timestamp, value: 0 }),
+                    valueIdx: 0,
+                }),
             }));
             return;
         }
 
-        const newObject = {} as TrackedObject;
-        const timeDiff = (timestamp - object.lastTime) / 1000;
-        const newValue = value / timeDiff;
-        newObject.lastTime = timestamp;
-
-        if (object.value === 0) {
-            newObject.value = newValue;
-        } else if (timeDiff > 0) {
-            // smoothed moving average
-            const N = 10;
-            newObject.value = ((N - 1.0) * object.value + newValue) / N;
-        }
-
         // Update state
         this.setState((prevState) => ({
-            trackedObjects: prevState.trackedObjects.map((o) => (o.key === object.key ? { ...o, ...newObject } : o)),
+            trackedObjects: prevState.trackedObjects.map((o) => {
+                if (o.key === object.key) {
+                    // Update next value in circular-array
+                    o.valueIdx = (o.valueIdx + 1) % o.values.length;
+                    const beginTime = o.values[o.valueIdx].time;
+                    o.values[o.valueIdx] = { time: timestamp, value: value };
+                    o.lastUpdated = timestamp;
+
+                    // smoothed moving average
+                    const N = o.values.length;
+                    const runningTime = (o.lastUpdated - beginTime) / 1000;
+                    const valuePerSecond = o.values.map((o) => o.value).reduce((a, b) => a + b, 0) / runningTime;
+                    o.valuePerSecond = ((N - 1.0) * o.valuePerSecond + valuePerSecond) / N;
+                }
+                return o;
+            }),
         }));
     }
 
@@ -69,7 +75,7 @@ export default class App extends Component<{}, AppState> {
         ].concat(
             this.state.trackedObjects
                 .slice()
-                .sort((a, b) => b.lastTime - a.lastTime)
+                .sort((a, b) => b.lastUpdated - a.lastUpdated)
                 .map((o) => {
                     switch (o.type) {
                         case 'skill':
