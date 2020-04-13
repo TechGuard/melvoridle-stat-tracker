@@ -1,0 +1,17 @@
+{
+    "manifest_version": 2,
+    "name": "MelvorIdle - StatTracker",
+    "version": "{VERSION_NUMBER}",
+    "description": "Statistics Tracker for melvoridle.com",
+    "author": "Robin van Nunen <robin@vnunen.nl>",
+    "homepage_url": "https://github.com/TechGuard/melvoridle-stat-tracker",
+    "icons": { "16": "icon16.png", "48": "icon48.png", "128": "icon128.png" },
+    "offline_enabled": false,
+    "content_scripts": [
+        {
+            "matches": ["https://*.melvoridle.com/*"],
+            "js": ["inject.js"]
+        }
+    ],
+    "web_accessible_resources": ["app.bundle.js"]
+}
