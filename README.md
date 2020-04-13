@@ -1,4 +1,4 @@
-# ![Icon](/extension/dist/icon16.png) MelvorIdle - StatTracker
+# ![Icon](/extension/src/icon16.png) MelvorIdle - StatTracker
 
 **Note: This is not an official melvoridle.com project.**
 
