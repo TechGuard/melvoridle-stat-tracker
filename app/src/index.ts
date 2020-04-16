@@ -51,6 +51,10 @@ const originals = Inject({
 // Render application
 app = ReactDOM.render(React.createElement(App), statTrackerElm);
 
+// Print package name + version
+declare var __npm_package_name__: string;
+console.log(`Loaded ${__npm_package_name__}.`);
+
 // Enable hot reload
 if (module.hot) {
     __webpack_public_path__ = 'https://localhost:8080/';

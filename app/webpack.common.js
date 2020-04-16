@@ -1,10 +1,12 @@
 const path = require('path');
 const merge = require('webpack-merge');
+const webpack = require('webpack');
 
 const defaultSettings = {
     hmr: false,
     sourceMap: false,
-    filename: '[hash].[ext]'
+    filename: '[hash].[ext]',
+    buildNameSuffix: ''
 }
 
 const outputPath = path.resolve(__dirname, 'dist');
@@ -53,7 +55,14 @@ function build(settings) {
                     ]
                 }
             ]
-        }
+        },
+        plugins: [
+            new webpack.DefinePlugin({
+                __npm_package_name__: JSON.stringify(
+                    `${process.env.npm_package_name}-${process.env.npm_package_version}${settings.buildNameSuffix}`
+                )
+            })
+        ]
     }
 }
 
