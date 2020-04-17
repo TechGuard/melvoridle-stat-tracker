@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TrackedObject, ObjectType, TrackedSkill, TrackedItem } from './TrackedObject';
+import { TrackedObject, ObjectType, TrackedObjectList } from './TrackedObject';
 
 interface AppState {
     trackedObjects: TrackedObject[];
@@ -72,18 +72,7 @@ export default class App extends Component<{}, AppState> {
                     <span className="fas fa-undo-alt text-muted ml-1" style={{ cursor: 'pointer' }} />
                 </a>
             </div>,
-        ].concat(
-            this.state.trackedObjects
-                .slice()
-                .sort((a, b) => b.lastUpdated - a.lastUpdated)
-                .map((o) => {
-                    switch (o.type) {
-                        case 'skill':
-                            return React.createElement(TrackedSkill, o);
-                        case 'item':
-                            return React.createElement(TrackedItem, o);
-                    }
-                })
-        );
+            <TrackedObjectList key="list" trackedObjects={this.state.trackedObjects} />,
+        ];
     }
 }
