@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "MelvorIdle - StatTracker",
-    "version": "{VERSION_NUMBER}",
+    "version": "1.1.1",
     "description": "Statistics Tracker for melvoridle.com",
     "author": "Robin van Nunen <robin@vnunen.nl>",
     "homepage_url": "https://github.com/TechGuard/melvoridle-stat-tracker",
@@ -11,6 +11,5 @@
             "matches": ["*://*.melvoridle.com/*"],
             "js": ["inject.js"]
         }
-    ],
-    "web_accessible_resources": ["app.bundle.js"]
+    ]
 }
