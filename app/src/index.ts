@@ -2,8 +2,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import App from './components/App';
 import { Inject, Eject } from './inject';
-
-let app: App;
+import { MelvorInjector } from './melvor';
 
 const statTrackerId = 'stat-tracker-container';
 
@@ -21,35 +20,11 @@ if (!statTrackerElm) {
 }
 
 // Inject into the global functions of MelvorIdle
-const originals = Inject({
-    addXP(skill, xp) {
-        try {
-            app.trackObject('skill', skill, xp);
-        } catch (err) {
-            console.error(err);
-        }
-        return originals.addXP(skill, xp);
-    },
-    addItemToBank(itemID, quantity, found = true, showNotification = true) {
-        try {
-            app.trackObject('item', itemID, quantity);
-        } catch (err) {
-            console.error(err);
-        }
-        return originals.addItemToBank(itemID, quantity, found, showNotification);
-    },
-    updateOffline(continueAction = true) {
-        try {
-            app.reset();
-        } catch (err) {
-            console.error(err);
-        }
-        return originals.updateOffline(continueAction);
-    },
-});
+const melvorInjector = new MelvorInjector();
+Inject(melvorInjector);
 
 // Render application
-app = ReactDOM.render(React.createElement(App), statTrackerElm);
+const app = melvorInjector.app = ReactDOM.render(React.createElement(App), statTrackerElm);
 
 // Print package name + version
 declare var __npm_package_name__: string;
@@ -66,6 +41,6 @@ if (module.hot) {
     module.hot.accept();
     module.hot.dispose((data) => {
         data.app = app.state;
-        Eject(originals);
+        Eject(melvorInjector);
     });
 }

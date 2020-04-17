@@ -6,6 +6,7 @@ const os = require('os');
 const settings = {
     hmr: true,
     sourceMap: true,
+    debugLog: true,
     filename: '[name]-[hash:8].[ext]',
     buildNameSuffix: `-dev-${os.hostname()}`
 }

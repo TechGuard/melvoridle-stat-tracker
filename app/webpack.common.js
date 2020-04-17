@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const defaultSettings = {
     hmr: false,
     sourceMap: false,
+    debugLog: false,
     filename: '[hash].[ext]',
     buildNameSuffix: ''
 }
@@ -58,6 +59,7 @@ function build(settings) {
         },
         plugins: [
             new webpack.DefinePlugin({
+                DEBUG_LOG: JSON.stringify(settings.debugLog),
                 __npm_package_name__: JSON.stringify(
                     `${process.env.npm_package_name}-${process.env.npm_package_version}${settings.buildNameSuffix}`
                 )
