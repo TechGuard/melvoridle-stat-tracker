@@ -3,6 +3,7 @@ import { TrackedObject, ObjectType, TrackedObjectList } from './TrackedObject';
 
 interface AppState {
     trackedObjects: TrackedObject[];
+    visible: boolean;
 }
 
 export default class App extends Component<{}, AppState> {
@@ -10,6 +11,7 @@ export default class App extends Component<{}, AppState> {
         super(props);
         this.state = {
             trackedObjects: [],
+            visible: false,
         };
     }
 
@@ -64,15 +66,32 @@ export default class App extends Component<{}, AppState> {
         });
     }
 
+    toggleVisibility() {
+        this.setState({
+            visible: !this.state.visible,
+        });
+    }
+
     render() {
+        let objectList = null;
+        if (this.state.visible) {
+            objectList = <TrackedObjectList key="list" trackedObjects={this.state.trackedObjects} />;
+        }
         return [
             <div key="app" className="nav-main-heading">
                 Statistics Tracker
-                <a onClick={this.reset.bind(this)}>
-                    <span className="fas fa-undo-alt text-muted ml-1" style={{ cursor: 'pointer' }} />
-                </a>
+                <i
+                    onClick={this.toggleVisibility.bind(this)}
+                    className={`far ${this.state.visible ? 'fa-eye' : 'fa-eye-slash'} text-muted ml-1`}
+                    style={{ cursor: 'pointer', paddingLeft: '3px' }}
+                />
+                <i
+                    onClick={this.reset.bind(this)}
+                    className="fas fa-undo-alt text-muted ml-1"
+                    style={{ cursor: 'pointer', paddingLeft: '3px' }}
+                />
             </div>,
-            <TrackedObjectList key="list" trackedObjects={this.state.trackedObjects} />,
+            objectList,
         ];
     }
 }

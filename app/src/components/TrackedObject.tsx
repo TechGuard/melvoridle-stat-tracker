@@ -25,6 +25,7 @@ type ObjectRenderData = {
 };
 
 const HIDDEN_ITEMS = [
+    // Mastery tokens
     Melvor.CONSTANTS.item.Mastery_Token_Cooking,
     Melvor.CONSTANTS.item.Mastery_Token_Crafting,
     Melvor.CONSTANTS.item.Mastery_Token_Farming,
@@ -37,6 +38,23 @@ const HIDDEN_ITEMS = [
     Melvor.CONSTANTS.item.Mastery_Token_Thieving,
     Melvor.CONSTANTS.item.Mastery_Token_Woodcutting,
     Melvor.CONSTANTS.item.Mastery_Token_Herblore,
+    // Burnt fish
+    Melvor.CONSTANTS.item.Burnt_Shrimp,
+    Melvor.CONSTANTS.item.Burnt_Sardine,
+    Melvor.CONSTANTS.item.Burnt_Herring,
+    Melvor.CONSTANTS.item.Burnt_Trout,
+    Melvor.CONSTANTS.item.Burnt_Salmon,
+    Melvor.CONSTANTS.item.Burnt_Lobster,
+    Melvor.CONSTANTS.item.Burnt_Swordfish,
+    Melvor.CONSTANTS.item.Burnt_Crab,
+    Melvor.CONSTANTS.item.Burnt_Shark,
+    Melvor.CONSTANTS.item.Burnt_Cave_Fish,
+    Melvor.CONSTANTS.item.Burnt_Manta_Ray,
+    Melvor.CONSTANTS.item.Burnt_Whale,
+    Melvor.CONSTANTS.item.Burnt_Anglerfish,
+    Melvor.CONSTANTS.item.Burnt_Fanfish,
+    Melvor.CONSTANTS.item.Burnt_Seahorse,
+    Melvor.CONSTANTS.item.Burnt_Carp,
 ];
 
 const CATEGORIES = [
