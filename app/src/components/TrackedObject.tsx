@@ -139,12 +139,8 @@ export class TrackedObjectList extends Component<{ trackedObjects: TrackedObject
 
                     // Add item to group
                     group.valuePerHour += renderData.valuePerHour;
-                    if (group.goldPerHour) {
-                        group.goldPerHour += renderData.goldPerHour;
-                    }
-                    if (group.objects) {
-                        group.objects.push(renderData);
-                    }
+                    group.goldPerHour! += renderData.goldPerHour;
+                    group.objects!.push(renderData);
                 } else if (o.type === 'skill') {
                     // Convert to RenderData
                     trackedObjects.push({
@@ -248,8 +244,8 @@ export class TrackedItem extends Component<ObjectRenderData> {
 export class TrackedGroup extends Component<ObjectRenderData> {
     render() {
         const items = this.props.objects || [];
-        const itemsPerHour = items.map((o) => o.valuePerHour).reduce((a, b) => a + b, 0);
-        const goldPerHour = items.map((o) => o.goldPerHour || 0).reduce((a, b) => a + b, 0);
+        const itemsPerHour = this.props.valuePerHour;
+        const goldPerHour = this.props.goldPerHour || 0;
         return (
             <ObjectDetails name={CATEGORIES[this.props.id].name} image={Melvor.items[items[0].id].media}>
                 <small>{`${Melvor.numberWithCommas(itemsPerHour)} items/hr`}</small>
