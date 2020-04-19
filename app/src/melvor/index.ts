@@ -18,7 +18,7 @@ export class MelvorInjector extends Injector {
 
     @Override()
     addItemToBank(itemID: number, quantity: number, found = true, showNotification = true) {
-        if (this.trackingEnabled) {
+        if (this.trackingEnabled && showNotification) {
             this.app.trackObject('item', itemID, quantity);
         }
         return this.__original.addItemToBank(itemID, quantity, found, showNotification);
@@ -38,7 +38,7 @@ export class MelvorInjector extends Injector {
     updateOffline(continueAction = true) {
         return this.doNotTrack(() => this.__original.updateOffline(continueAction));
     }
-    
+
     doNotTrack<T>(callback: () => T): T {
         const tmp = this.trackingEnabled;
         this.trackingEnabled = false;

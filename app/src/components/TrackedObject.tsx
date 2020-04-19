@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Melvor from '../melvor';
 import styles from '../styles.scss';
+import { SettingsContext, SettingsState } from './Settings';
 
 export type ObjectType = 'skill' | 'item';
 
@@ -84,18 +85,20 @@ const CATEGORIES = [
 ];
 
 export class TrackedObjectList extends Component<{ trackedObjects: TrackedObject[] }> {
-    render() {
-        let trackedObjects: ObjectRenderData[] = [];
+    static contextType = SettingsContext;
 
+    render() {
+        const settings: SettingsState = this.context;
         const valueToHour = (value: number) => Math.floor(value * 3600);
 
+        let trackedObjects: ObjectRenderData[] = [];
         this.props.trackedObjects
             .slice()
             .sort((a, b) => b.lastUpdated - a.lastUpdated)
             .forEach((o) => {
                 if (o.type === 'item') {
                     // Do not show hidden items
-                    if (HIDDEN_ITEMS.find((id) => id === o.id)) {
+                    if (!settings.showHiddenItems && HIDDEN_ITEMS.find((id) => id === o.id)) {
                         return;
                     }
 
@@ -117,7 +120,7 @@ export class TrackedObjectList extends Component<{ trackedObjects: TrackedObject
 
                     // Check if item belongs to a category
                     const categoryId = CATEGORIES.findIndex((c) => c.items.find((id) => id === o.id));
-                    if (categoryId === -1) {
+                    if (!settings.groupCommonItems || categoryId === -1) {
                         trackedObjects.push(renderData);
                         return;
                     }
@@ -171,6 +174,7 @@ export class TrackedObjectList extends Component<{ trackedObjects: TrackedObject
     }
 
     renderTotalGold(trackedObjects: ObjectRenderData[]): any {
+        // Count gold and objects
         let totalGoldPerHour = 0;
         let numberOfObjects = 0;
         for (const renderData of trackedObjects) {
@@ -179,9 +183,20 @@ export class TrackedObjectList extends Component<{ trackedObjects: TrackedObject
                 numberOfObjects += 1;
             }
         }
-        if (!totalGoldPerHour || numberOfObjects < 2) {
-            return null;
+
+        // Check settings
+        const settings: SettingsState = this.context;
+        switch (settings.displayGoldHr) {
+            case 'always':
+                break;
+            case 'never':
+                return null;
+            default:
+                if (!totalGoldPerHour || numberOfObjects < 2) {
+                    return null;
+                }
         }
+
         return (
             <ObjectDetails
                 key="gold"

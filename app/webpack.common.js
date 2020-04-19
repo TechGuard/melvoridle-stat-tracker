@@ -62,7 +62,8 @@ function build(settings) {
                 DEBUG_LOG: JSON.stringify(settings.debugLog),
                 __npm_package_name__: JSON.stringify(
                     `${process.env.npm_package_name}-${process.env.npm_package_version}${settings.buildNameSuffix}`
-                )
+                ),
+                __npm_package_version__: JSON.stringify(process.env.npm_package_version)
             })
         ]
     }

@@ -1,3 +1,10 @@
+.navMainHeading {
+    i {
+        cursor: pointer;
+        margin: 0 8px;
+    }
+}
+
 .statContainer {
     padding: 0.1rem 1.25rem;
 }
@@ -5,4 +12,9 @@
 .statDetails {
     display: flex;
     flex-direction: column;
+}
+
+// Fix the rounded corners in modals
+:global(.modal-content .block) {
+    margin-top: -2px;
 }

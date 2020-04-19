@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
 import { TrackedObject, ObjectType, TrackedObjectList } from './TrackedObject';
+import { Settings, SettingsProvider } from './Settings';
+import styles from '../styles.scss';
 
 interface AppState {
     trackedObjects: TrackedObject[];
     visible: boolean;
 }
-
 export default class App extends Component<{}, AppState> {
+    settingsRef = React.createRef<Settings>();
+
     constructor(props: Readonly<{}>) {
         super(props);
         this.state = {
             trackedObjects: [],
-            visible: false,
+            visible: true,
         };
     }
 
@@ -72,26 +75,33 @@ export default class App extends Component<{}, AppState> {
         });
     }
 
-    render() {
-        let objectList = null;
-        if (this.state.visible) {
-            objectList = <TrackedObjectList key="list" trackedObjects={this.state.trackedObjects} />;
+    openSettings() {
+        if (this.settingsRef.current) {
+            this.settingsRef.current.open();
         }
-        return [
-            <div key="app" className="nav-main-heading">
-                Statistics Tracker
-                <i
-                    onClick={this.toggleVisibility.bind(this)}
-                    className={`far ${this.state.visible ? 'fa-eye' : 'fa-eye-slash'} text-muted ml-1`}
-                    style={{ cursor: 'pointer', paddingLeft: '3px' }}
-                />
-                <i
-                    onClick={this.reset.bind(this)}
-                    className="fas fa-undo-alt text-muted ml-1"
-                    style={{ cursor: 'pointer', paddingLeft: '3px' }}
-                />
-            </div>,
-            objectList,
-        ];
+    }
+
+    render() {
+        let visibilityIcon, objectList;
+
+        if (this.state.visible) {
+            visibilityIcon = 'fa-eye';
+            objectList = <TrackedObjectList trackedObjects={this.state.trackedObjects} />;
+        } else {
+            visibilityIcon = 'fa-eye-slash';
+        }
+
+        return (
+            <SettingsProvider>
+                <Settings ref={this.settingsRef} />
+                <div className={'nav-main-heading ' + styles.navMainHeading}>
+                    Stat Tracker
+                    <i onClick={this.toggleVisibility.bind(this)} className={'far text-muted ' + visibilityIcon} />
+                    <i onClick={this.reset.bind(this)} className="fas fa-undo-alt text-muted" />
+                    <i onClick={this.openSettings.bind(this)} className="fas fa-cog text-muted" />
+                </div>
+                {objectList}
+            </SettingsProvider>
+        );
     }
 }
