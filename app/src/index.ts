@@ -4,6 +4,10 @@ import App from './components/App';
 import { Inject, Eject } from './inject';
 import { MelvorInjector } from './melvor';
 
+declare var __npm_package_name__: string;
+declare var __npm_package_version__: string;
+declare var __gtag_tracking_id__: string;
+
 const statTrackerId = 'stat-tracker-container';
 
 // Find or Create stat-tracker container
@@ -24,10 +28,9 @@ const melvorInjector = new MelvorInjector();
 Inject(melvorInjector);
 
 // Render application
-const app = melvorInjector.app = ReactDOM.render(React.createElement(App), statTrackerElm);
+const app = (melvorInjector.app = ReactDOM.render(React.createElement(App), statTrackerElm));
 
-// Print package name + version
-declare var __npm_package_name__: string;
+// Print package name
 console.log(`Loaded ${__npm_package_name__}.`);
 
 // Enable hot reload
@@ -42,5 +45,14 @@ if (module.hot) {
     module.hot.dispose((data) => {
         data.app = app.state;
         Eject(melvorInjector);
+    });
+}
+
+// Enable google analytics if available
+declare var gtag: any;
+if (__gtag_tracking_id__ && gtag) {
+    gtag('config', __gtag_tracking_id__, {
+        packageName: __npm_package_name__,
+        packageVersion: __npm_package_version__,
     });
 }

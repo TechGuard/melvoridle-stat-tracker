@@ -7,7 +7,8 @@ const defaultSettings = {
     sourceMap: false,
     debugLog: false,
     filename: '[hash].[ext]',
-    buildNameSuffix: ''
+    buildNameSuffix: '',
+    gTagTrackingId: '',
 }
 
 const outputPath = path.resolve(__dirname, 'dist');
@@ -60,6 +61,7 @@ function build(settings) {
         plugins: [
             new webpack.DefinePlugin({
                 DEBUG_LOG: JSON.stringify(settings.debugLog),
+                __gtag_tracking_id__: JSON.stringify(settings.gTagTrackingId),
                 __npm_package_name__: JSON.stringify(
                     `${process.env.npm_package_name}-${process.env.npm_package_version}${settings.buildNameSuffix}`
                 ),
