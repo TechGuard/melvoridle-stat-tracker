@@ -7,18 +7,29 @@ interface MelvorItem {
     media: string;
 }
 
+interface MelvorBankItem {
+    id: number;
+    category: string;
+    name: string;
+    type: string;
+    qty: number;
+}
+
 interface MelvorBindings {
     exp: {
         level_to_xp: (level: number) => number;
     };
     numberWithCommas: (number: number) => string;
     convertGP: (gp: number) => string;
+    claimToken: (bankId: string, itemId: number, all?: boolean) => void;
 
     skillLevel: { [skillId: number]: number };
     skillName: { [skillId: number]: string };
     skillXP: { [skillId: number]: number };
 
     items: { [itemId: number]: MelvorItem };
+
+    bank: { [bankSlotId: number]: MelvorBankItem };
 
     CONSTANTS: {
         skill: {
