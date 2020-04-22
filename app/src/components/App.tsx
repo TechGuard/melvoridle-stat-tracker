@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TrackedObject, ObjectType, TrackedObjectList } from './TrackedObject';
 import { Settings, SettingsProvider } from './Settings';
 import styles from '../styles.scss';
+import Bank from './Bank';
 
 interface AppState {
     trackedObjects: TrackedObject[];
@@ -9,6 +10,7 @@ interface AppState {
 }
 export default class App extends Component<{}, AppState> {
     settingsRef = React.createRef<Settings>();
+    bankRef = React.createRef<Bank>();
 
     constructor(props: Readonly<{}>) {
         super(props);
@@ -94,6 +96,7 @@ export default class App extends Component<{}, AppState> {
         return (
             <SettingsProvider>
                 <Settings ref={this.settingsRef} />
+                <Bank ref={this.bankRef} />
                 <div className={'nav-main-heading ' + styles.navMainHeading}>
                     Stat Tracker
                     <i onClick={this.toggleVisibility.bind(this)} className={'far text-muted ' + visibilityIcon} />
