@@ -33,14 +33,14 @@ jobs:
         working-directory: app
     steps:
     - name: Get version number
-      run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
+      uses: olegtarasov/get-tag@v2
     - name: Add distribution files
       run: git add dist
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git commit -m "Release new version ${{ env.RELEASE_VERSION }}"
+        git commit -m "Release new version $GIT_TAG_NAME"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
