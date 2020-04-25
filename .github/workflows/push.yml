@@ -39,24 +39,26 @@ jobs:
 
     name: Release
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: app
+    env:
+      TARGET_BRANCH: test-actions
+      TARGET_PATH: app/dist
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: ${{ env.TARGET_BRANCH }}
 
     - name: Download Artifact
       uses: actions/download-artifact@v1
       with:
         name: app-dist
-        path: app/dist
+        path: ${{ env.TARGET_PATH }}
 
     - name: Get version number
       uses: olegtarasov/get-tag@v2
 
     - name: Add distribution files
-      run: git add dist
+      run: git add "$TARGET_PATH"
 
     - name: Commit files
       run: |
@@ -68,4 +70,4 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: test-actions
+        branch: ${{ env.TARGET_BRANCH }}
