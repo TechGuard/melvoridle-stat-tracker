@@ -40,7 +40,7 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     env:
-      TARGET_BRANCH: test-actions
+      TARGET_BRANCH: gh-pages
       TARGET_PATH: app/dist
 
     steps:
