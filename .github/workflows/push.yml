@@ -9,38 +9,59 @@ jobs:
     defaults:
       run:
         working-directory: app
+
     steps:
     - uses: actions/checkout@v2
+
     - name: Setup Node
       uses: actions/setup-node@v1
       with:
         node-version: 12
+
     - name: Install dependencies
       run: npm ci
+
     - name: Build App
       run: npm run build --if-present
       env:
         CI: true
 
+    - name: Publish Artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: app-dist
+        path: dist
+
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs:
     - build
+    
     name: Release
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: app
+
     steps:
+    - name: Download Artifact
+      uses: actions/download-artifact@v1
+      with:
+        name: app-dist
+        path: dist
+
     - name: Get version number
       uses: olegtarasov/get-tag@v2
+
     - name: Add distribution files
       run: git add dist
+
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git commit -m "Release new version $GIT_TAG_NAME"
+
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
