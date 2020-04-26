@@ -21,7 +21,7 @@ interface MelvorBindings {
     };
     numberWithCommas: (number: number) => string;
     convertGP: (gp: number) => string;
-    claimToken: (bankId: string, itemId: number, all?: boolean) => void;
+    claimToken: (bankId: number, itemId: number, all?: boolean) => void;
 
     skillLevel: { [skillId: number]: number };
     skillName: { [skillId: number]: string };
