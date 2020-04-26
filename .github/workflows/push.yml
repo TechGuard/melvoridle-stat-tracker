@@ -2,9 +2,11 @@ name: push
 
 on:
   push:
-    paths: app
+    paths:
+    - 'app/**'
   pull_request:
-    paths: app
+    paths:
+    - 'app/**'
 
 jobs:
   build:
