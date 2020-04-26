@@ -1,0 +1,114 @@
+html,
+body {
+    font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+    font-size: 13px;
+    line-height: 154%;
+    background-color: #ffffff;
+    color: #202124;
+    margin: 0;
+}
+body {
+    margin-bottom: 15px;
+    display: none;
+    min-width: 420px;
+}
+body.loaded {
+    display: block;
+}
+
+.row {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+.row:first-child {
+    border-top: none;
+}
+.content {
+    color: #5f6368;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #3367d6;
+}
+
+.toggle {
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    display: block;
+    min-width: 34px;
+    outline: none;
+    position: relative;
+    width: 34px;
+    margin-left: 20px;
+}
+.toggle .bar {
+    background-color: #bdc1c6;
+    border-radius: 8px;
+    height: 12px;
+    left: 3px;
+    position: absolute;
+    top: 2px;
+    transition: background-color linear 80ms;
+    width: 28px;
+    z-index: 0;
+}
+.toggle .knob {
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+    display: block;
+    height: 16px;
+    position: relative;
+    transition: transform linear 80ms, background-color linear 80ms;
+    width: 16px;
+    z-index: 1;
+}
+.toggle.checked .bar {
+    background-color: #1a73e8;
+    opacity: 0.5;
+}
+.toggle.checked .knob {
+    background-color: #1a73e8;
+    transform: translate3d(18px, 0, 0);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    html,
+    body {
+        background-color: #292a2d;
+        color: #e8eaed;
+    }
+    .row {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .content {
+        color: #9aa0a6;
+    }
+    a {
+        color: #8ab4f8;
+    }
+    .toggle .bar {
+        background-color: #9aa0a6;
+    }
+    .toggle.checked .bar {
+        background-color: #8ab4f8;
+    }
+    .toggle.checked .knob {
+        background-color: #8ab4f8;
+    }
+
+    /* Fix for firefox */
+    @-moz-document url-prefix() {
+        html,
+        body {
+            background-color: #202023;
+            min-height: 250px;
+        }
+    }
+}
