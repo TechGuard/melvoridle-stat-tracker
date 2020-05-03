@@ -10,7 +10,6 @@ interface AppState {
 }
 export default class App extends Component<{}, AppState> {
     settingsRef = React.createRef<Settings>();
-    bankRef = React.createRef<Bank>();
 
     constructor(props: Readonly<{}>) {
         super(props);
@@ -65,6 +64,12 @@ export default class App extends Component<{}, AppState> {
         }));
     }
 
+    resetObject(type: ObjectType, id: number) {
+        this.setState((prevState) => ({
+            trackedObjects: prevState.trackedObjects.filter((o) => !(o.type === type && o.id === id)),
+        }));
+    }
+
     reset() {
         this.setState({
             trackedObjects: [],
@@ -83,27 +88,27 @@ export default class App extends Component<{}, AppState> {
         }
     }
 
+    private get visibilityIcon() {
+        return this.state.visible ? 'fa-eye' : 'fa-eye-slash';
+    }
+
     render() {
-        let visibilityIcon, objectList;
-
-        if (this.state.visible) {
-            visibilityIcon = 'fa-eye';
-            objectList = <TrackedObjectList trackedObjects={this.state.trackedObjects} />;
-        } else {
-            visibilityIcon = 'fa-eye-slash';
-        }
-
         return (
             <SettingsProvider>
                 <Settings ref={this.settingsRef} />
-                <Bank ref={this.bankRef} />
+                <Bank />
                 <div className={'nav-main-heading ' + styles.navMainHeading}>
                     Stat Tracker
-                    <i onClick={this.toggleVisibility.bind(this)} className={'far text-muted ' + visibilityIcon} />
+                    <i onClick={this.toggleVisibility.bind(this)} className={'far text-muted ' + this.visibilityIcon} />
                     <i onClick={this.reset.bind(this)} className="fas fa-undo-alt text-muted" />
                     <i onClick={this.openSettings.bind(this)} className="fas fa-cog text-muted" />
                 </div>
-                {objectList}
+                {this.state.visible && (
+                    <TrackedObjectList
+                        trackedObjects={this.state.trackedObjects}
+                        onResetObject={this.resetObject.bind(this)}
+                    />
+                )}
             </SettingsProvider>
         );
     }

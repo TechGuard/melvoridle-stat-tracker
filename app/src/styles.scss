@@ -7,11 +7,23 @@
 
 .statContainer {
     padding: 0.1rem 1.25rem;
-}
 
-.statDetails {
-    display: flex;
-    flex-direction: column;
+    .statDetails {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .statBtn {
+        cursor: pointer;
+        margin-left: auto;
+        padding-left: 0.66em;
+        font-size: 80%;
+        display: none;
+    }
+
+    &:hover .statBtn {
+        display: block;
+    }
 }
 
 // Fix the rounded corners in modals

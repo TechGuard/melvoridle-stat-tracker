@@ -25,6 +25,8 @@ type ObjectRenderData = {
     objects?: ObjectRenderData[];
 };
 
+type ObjectRenderDataProps = ObjectRenderData & { onReset?: () => void };
+
 const HIDDEN_ITEMS = [
     // Mastery tokens
     Melvor.CONSTANTS.item.Mastery_Token_Cooking,
@@ -84,7 +86,10 @@ const CATEGORIES = [
     },
 ];
 
-export class TrackedObjectList extends Component<{ trackedObjects: TrackedObject[] }> {
+export class TrackedObjectList extends Component<{
+    trackedObjects: TrackedObject[];
+    onResetObject: (type: ObjectType, id: number) => void;
+}> {
     static contextType = SettingsContext;
 
     render() {
@@ -163,11 +168,16 @@ export class TrackedObjectList extends Component<{ trackedObjects: TrackedObject
             .map((o) => {
                 switch (o.type) {
                     case 'skill':
-                        return React.createElement(TrackedSkill, o);
+                        return <TrackedSkill onReset={() => this.props.onResetObject('skill', o.id)} {...o} />;
                     case 'item':
-                        return React.createElement(TrackedItem, o);
+                        return <TrackedItem onReset={() => this.props.onResetObject('item', o.id)} {...o} />;
                     case 'group':
-                        return React.createElement(TrackedGroup, o);
+                        return (
+                            <TrackedGroup
+                                onReset={() => o.objects?.forEach((obj) => this.props.onResetObject('item', obj.id))}
+                                {...o}
+                            />
+                        );
                 }
             })
             .concat(this.renderTotalGold(trackedObjects));
@@ -207,7 +217,7 @@ export class TrackedObjectList extends Component<{ trackedObjects: TrackedObject
     }
 }
 
-export class TrackedSkill extends Component<ObjectRenderData> {
+export class TrackedSkill extends Component<ObjectRenderDataProps> {
     render() {
         const skillId = this.props.id;
         const expPerSecond = this.props.valuePerSecond;
@@ -234,7 +244,7 @@ export class TrackedSkill extends Component<ObjectRenderData> {
         const media = `assets/media/skills/${skillNameLower}/${skillNameLower}.svg`;
 
         return (
-            <ObjectDetails name={skillName} image={media}>
+            <ObjectDetails name={skillName} image={media} onReset={this.props.onReset}>
                 <small>{`${Melvor.numberWithCommas(expPerHour)} exp/hr`}</small>
                 {nextLevel}
             </ObjectDetails>
@@ -242,13 +252,13 @@ export class TrackedSkill extends Component<ObjectRenderData> {
     }
 }
 
-export class TrackedItem extends Component<ObjectRenderData> {
+export class TrackedItem extends Component<ObjectRenderDataProps> {
     render() {
         const itemsPerHour = this.props.valuePerHour;
         const goldPerHour = this.props.goldPerHour || 0;
         const itemDef = Melvor.items[this.props.id];
         return (
-            <ObjectDetails name={itemDef.name} image={itemDef.media}>
+            <ObjectDetails name={itemDef.name} image={itemDef.media} onReset={this.props.onReset}>
                 <small>{`${Melvor.numberWithCommas(itemsPerHour)} items/hr`}</small>
                 <small>{`${Melvor.convertGP(goldPerHour)} gold/hr`}</small>
             </ObjectDetails>
@@ -256,13 +266,17 @@ export class TrackedItem extends Component<ObjectRenderData> {
     }
 }
 
-export class TrackedGroup extends Component<ObjectRenderData> {
+export class TrackedGroup extends Component<ObjectRenderDataProps> {
     render() {
         const items = this.props.objects || [];
         const itemsPerHour = this.props.valuePerHour;
         const goldPerHour = this.props.goldPerHour || 0;
         return (
-            <ObjectDetails name={CATEGORIES[this.props.id].name} image={Melvor.items[items[0].id].media}>
+            <ObjectDetails
+                name={CATEGORIES[this.props.id].name}
+                image={Melvor.items[items[0].id].media}
+                onReset={this.props.onReset}
+            >
                 <small>{`${Melvor.numberWithCommas(itemsPerHour)} items/hr`}</small>
                 <small>{`${Melvor.convertGP(goldPerHour)} gold/hr`}</small>
             </ObjectDetails>
@@ -270,11 +284,7 @@ export class TrackedGroup extends Component<ObjectRenderData> {
     }
 }
 
-interface ObjectDetailsProps {
-    name: string;
-    image: string;
-}
-class ObjectDetails extends Component<ObjectDetailsProps> {
+class ObjectDetails extends Component<{ name: string; image: string; onReset?: () => void }> {
     render() {
         return (
             <div className="nav-main-item">
@@ -284,6 +294,9 @@ class ObjectDetails extends Component<ObjectDetailsProps> {
                         <span className="nav-main-link-name">{this.props.name}</span>
                         {this.props.children}
                     </div>
+                    {this.props.onReset && (
+                        <i onClick={this.props.onReset} className={'fas fa-undo-alt text-muted ' + styles.statBtn} />
+                    )}
                 </a>
             </div>
         );
