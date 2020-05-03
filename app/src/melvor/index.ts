@@ -39,6 +39,11 @@ export class MelvorInjector extends Injector {
         return this.doNotTrack(() => this.__original.updateOffline(continueAction));
     }
 
+    @Override()
+    lootAll() {
+        return this.doNotTrack(() => this.__original.lootAll());
+    }
+
     doNotTrack<T>(callback: () => T): T {
         const tmp = this.trackingEnabled;
         this.trackingEnabled = false;
