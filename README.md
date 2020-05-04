@@ -1,5 +1,7 @@
 # ![Icon](/extension/src/icon16.png) MelvorIdle - StatTracker
 
+![Build](https://github.com/TechGuard/melvoridle-stat-tracker/workflows/Build/badge.svg?event=push)
+
 **Note: This is not an official [melvoridle.com](https://melvoridle.com/) project.**
 
 ![Screenshot](/extension/screenshot1.png)
