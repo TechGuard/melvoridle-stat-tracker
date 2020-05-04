@@ -3,12 +3,15 @@ const common = require('./webpack.common.js');
 const webpack = require('webpack');
 const os = require('os');
 
+const devTag = `dev-${os.hostname()}`;
+
 const settings = {
     hmr: true,
     sourceMap: true,
     debugLog: true,
     filename: '[name]-[hash:8].[ext]',
-    buildNameSuffix: `-dev-${os.hostname()}`
+    buildNameSuffix: `-${devTag}`,
+    overrideVersion: devTag
 }
 
 module.exports = merge(common.build(settings), {
