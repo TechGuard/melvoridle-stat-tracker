@@ -44,7 +44,7 @@ jobs:
         path: app/dist
 
   release:
-    if: github.event == 'push'
+    if: github.event_name == 'push'
     needs:
     - build
 
