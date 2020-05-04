@@ -31,6 +31,11 @@ interface MelvorBindings {
 
     bank: { [bankSlotId: number]: MelvorBankItem };
 
+    // Current gold
+    gp: number;
+
+    droppedLoot: { itemID: number; qty: number }[];
+
     CONSTANTS: {
         skill: {
             Woodcutting: number;

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Melvor from '../melvor';
-
-const typedKeys: { <T>(o: T): Array<keyof T> } = Object.keys as any;
+import { typedKeys } from '../util';
 
 export default class Bank extends Component {
     renderTarget = document.querySelector('#bank-container > div > div:nth-child(2)')!;

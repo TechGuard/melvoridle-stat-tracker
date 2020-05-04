@@ -3,7 +3,7 @@ import Melvor from '../melvor';
 import styles from '../styles.scss';
 import { SettingsContext, SettingsState } from './Settings';
 
-export type ObjectType = 'skill' | 'item';
+export type ObjectType = 'skill' | 'item' | 'coins';
 
 export interface TrackedObject {
     type: ObjectType;
@@ -99,7 +99,8 @@ export class TrackedObjectList extends Component<{
         let trackedObjects: ObjectRenderData[] = [];
         this.props.trackedObjects
             .slice()
-            .sort((a, b) => b.lastUpdated - a.lastUpdated)
+            // Sort based on last updated grouped by 2 seconds
+            .sort((a, b) => Math.floor(b.lastUpdated / 2000) - Math.floor(a.lastUpdated / 2000))
             .forEach((o) => {
                 if (o.type === 'item') {
                     // Do not show hidden items
@@ -149,6 +150,16 @@ export class TrackedObjectList extends Component<{
                     group.valuePerHour += renderData.valuePerHour;
                     group.goldPerHour! += renderData.goldPerHour;
                     group.objects!.push(renderData);
+                } else if (o.type === 'coins') {
+                    // Convert to RenderData
+                    trackedObjects.push({
+                        type: o.type,
+                        key: o.key,
+                        id: o.id,
+                        valuePerSecond: o.valuePerSecond,
+                        valuePerHour: valueToHour(o.valuePerSecond),
+                        goldPerHour: valueToHour(o.valuePerSecond),
+                    });
                 } else if (o.type === 'skill') {
                     // Convert to RenderData
                     trackedObjects.push({
@@ -171,6 +182,15 @@ export class TrackedObjectList extends Component<{
                         return <TrackedSkill onReset={() => this.props.onResetObject('skill', o.id)} {...o} />;
                     case 'item':
                         return <TrackedItem onReset={() => this.props.onResetObject('item', o.id)} {...o} />;
+                    case 'coins':
+                        return (
+                            <ObjectDetails
+                                key={o.key}
+                                name={`${Melvor.convertGP(o.valuePerHour)} coins/hr`}
+                                image="assets/media/main/coins.svg"
+                                onReset={() => this.props.onResetObject('coins', o.id)}
+                            />
+                        );
                     case 'group':
                         return (
                             <TrackedGroup
@@ -210,7 +230,7 @@ export class TrackedObjectList extends Component<{
         return (
             <ObjectDetails
                 key="gold"
-                name={`${Melvor.convertGP(totalGoldPerHour)} gold/hr`}
+                name={`${Melvor.convertGP(totalGoldPerHour)} total gold/hr`}
                 image="assets/media/main/coins.svg"
             />
         );

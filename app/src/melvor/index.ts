@@ -1,6 +1,7 @@
 import { Override, Injector } from '../inject';
 import Melvor from './bindings';
 import App from '../components/App';
+import { typedKeys } from '../util';
 
 export default Melvor;
 
@@ -42,6 +43,38 @@ export class MelvorInjector extends Injector {
     @Override()
     lootAll() {
         return this.doNotTrack(() => this.__original.lootAll());
+    }
+
+    @Override()
+    dropLoot(enemy: number) {
+        // Convert array to map
+        const lootPerItem = (loot: typeof Melvor.droppedLoot) => {
+            const result: { [itemID: number]: number } = {};
+            loot.forEach((x) => (result[x.itemID] = (result[x.itemID] || 0) + x.qty));
+            return result;
+        };
+
+        const lastGP = Melvor.gp;
+        const lastDroppedLoot = lootPerItem(Melvor.droppedLoot);
+
+        this.__original.dropLoot(enemy);
+
+        if (!this.trackingEnabled) {
+            return;
+        }
+
+        const addedGP = Melvor.gp - lastGP;
+        if (addedGP > 0) {
+            this.app.trackObject('coins', 1, addedGP);
+        }
+
+        const newDroppedLoot = lootPerItem(Melvor.droppedLoot);
+        for (const itemID of typedKeys(newDroppedLoot)) {
+            const addedItemQty = newDroppedLoot[itemID] - (lastDroppedLoot[itemID] || 0);
+            if (addedItemQty != 0) {
+                this.app.trackObject('item', itemID, addedItemQty);
+            }
+        }
     }
 
     doNotTrack<T>(callback: () => T): T {
