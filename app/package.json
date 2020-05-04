@@ -1,6 +1,6 @@
 {
     "name": "melvoridle-stat-tracker",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "Statistics tracker for Melvor Idle",
     "private": true,
     "scripts": {
