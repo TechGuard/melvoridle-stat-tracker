@@ -54,8 +54,9 @@ export function Inject(injector: Injector) {
     for (const functionName of overrideKeys) {
         const override: InjectedFunction = overrides[functionName].bind(injector);
         override.__injected = true;
+        override.__original = GLOBAL[functionName];
 
-        injector.__original[functionName] = GLOBAL[functionName];
+        injector.__original[functionName] = override.__original;
         GLOBAL[functionName] = override;
     }
 }
@@ -82,6 +83,7 @@ const overridesPropertyKey = '__overrides';
 
 interface InjectedFunction extends Function {
     __injected: boolean;
+    __original: Function;
 }
 
 const GLOBAL: {
