@@ -46,6 +46,11 @@ export class MelvorInjector extends Injector {
     }
 
     @Override()
+    collectLoot(lootID: number, itemID: number, qty: number) {
+        return this.doNotTrack(() => this.__original.collectLoot(lootID, itemID, qty));
+    }
+
+    @Override()
     dropLoot(enemy: number) {
         // Convert array to map
         const lootPerItem = (loot: typeof Melvor.droppedLoot) => {
