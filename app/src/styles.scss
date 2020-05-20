@@ -26,6 +26,22 @@
     }
 }
 
+// Hide statContainer in sidebar-mini
+@media (min-width: 992px) {
+    :global(.sidebar-mini.sidebar-o #sidebar) .statContainer {
+        .statDetails,
+        .statBtn {
+            transition: opacity 0.28s ease-out;
+        }
+    }
+    :global(.sidebar-mini.sidebar-o #sidebar:not(:hover)) .statContainer {
+        .statDetails,
+        .statBtn {
+            opacity: 0;
+        }
+    }
+}
+
 // Fix the rounded corners in modals
 :global(.modal-content .block) {
     margin-top: -2px;
